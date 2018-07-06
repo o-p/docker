@@ -7,10 +7,18 @@
 ```bash
 git clone git@github.com:o-p/docker.git
 cd docker
-git checkout -t <tag> -b <branch-name>
-cp ./Dockerfile <project-path>
-docker build -t <image-tag-name> <project-path>
-docker run -d <image-tag-name>:<version> # set env / ports here
+# Check out to specific tag which match project env
+git checkout -t <tag> -b <branch>
+# Copy or link dockerfile to project root
+cp ./Dockerfile <project>
+# Build image, provide a proper name and tag would be helpful
+docker build -t <name>:<tag> <project>
+# Run image in background, mapping local port to image exposed ports
+docker run -d <name>:<tag> -p <local-port>:<continer-port>
+# Now the container should be runnung in background
+docker ps
+# Visit it if it's an web service
+open http://127.0.0.1:<local-port>
 ```
 
 ## Guides

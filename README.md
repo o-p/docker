@@ -13,12 +13,15 @@ git checkout -t <tag> -b <branch>
 cp ./Dockerfile <project>
 # Build image, provide a proper name and tag would be helpful
 docker build -t <name>:<tag> <project>
-# Run image in background, mapping local port to image exposed ports
+
+# CASE - Web service
+#     Run image in background, mapping local port to image exposed ports
 docker run -d <name>:<tag> -p <local-port>:<continer-port>
-# Now the container should be runnung in background
-docker ps
-# Visit it if it's an web service
 open http://127.0.0.1:<local-port>
+
+# CASE - Bash of dev env
+#     Run interactively
+docker run -t -i <name>:<tag>
 ```
 
 ## Guides

@@ -1,29 +1,25 @@
 # Docker Images
 
-用來快速開發的 docker images, 多半都是把 Dockfile 放到 project root 後就直接使用
+用來快速開發的 docker images, 預期使用方法:
 
-常用指令:
+1. 切換到工作 branch 或 tag, `git checkout -t <tag> -b <branch>`
 
-```bash
-git clone git@github.com:o-p/docker.git
-cd docker
-# Check out to specific tag which match project env
-git checkout -t <tag> -b <branch>
-# Copy or link dockerfile to project root
-cp ./Dockerfile <project>
-# Build image, provide a proper name and tag would be helpful
-docker build -t <name>:<tag> <project>
+2. 可能需要 build image `docker build -t <name>:<tag> <project>`
 
-# CASE - Web service
-#     Run image in background, mapping local port to image exposed ports
-docker run -d <name>:<tag> -p <local-port>:<continer-port>
-open http://127.0.0.1:<local-port>
+3. 看 project 規模
 
-# CASE - Bash of dev env
-#     Run interactively
-docker run -t -i <name>:<tag>
-```
+    * 需要整合很多服務 - 透過 Docker Compose `docker-compose run -d`
+
+    * 簡單測試 web app - 直接 run image in detach mode:
+      ```bash
+      docker run -p <local-port>:<container-port> -d <name>:<tag>
+      open http://127.0.0.1:<local-port>
+      ```
+
+    * 互動模式, `docker run -it <name>:<tag>`
 
 ## Guides
 
-Only one dockerfile in each branch, and master branch would never contains dockerfile, so it'll never conflict while rebase master.
+單一 branch 只最小幅度寫 Dockerfile, 其他服務盡量透過 official lib image (mysql/redis/...)
+
+branch 說明不寫在 README.md 避免每次 master 升級發生衝突

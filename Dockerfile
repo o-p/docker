@@ -1,36 +1,16 @@
-# BUILD:
-# docker build -t <tag>:<ver> -f ~/Github/o-p/docker/Dockerfile ~/docker
+# 基於 php-fpm 增加 modules, 有些相依處理很麻煩, 直接參考 wordpress 的影像檔
+# https://github.com/wpengine/php-docker/blob/master/Dockerfile.php7.2
+FROM php:7-fpm
 
-# RUN(interactive)
-# docker run -it <tag>:<ver>
-
-# 官方的常用基本 image https://hub.docker.com/_/buildpack-deps/
-# 比照開發機選用 trusty (ubuntu 14), scm 包含的東西可以在網站最下方看到
-FROM buildpack-deps:trusty-scm
-
-LABEL maintainer="op.github.io@gmail.com"
-
-# kk env
-ENV SECRET=/kkcorp/kksecret
-
-# Inject secrets
-COPY ./secrets ${SECRET}
-
-# Laravel 常用
-ENV APP_ENV development
-
-# create user
-# RUN useradd -ms /bin/bash o-p && echo "o-p:0000" | chpasswd && adduser o-p sudo
-
-# USER o-p
-# WORKDIR /home/o-p
-
-# RUN mkdir storage repo
-# COPY ./ssh /home/o-p/.ssh
-
-# VOLUME /home/o-p/storage
-VOLUME /app
-
-EXPOSE 80
-
-CMD ["/bin/bash"]
+RUN set -ex; \
+  apt-get update; \
+  apt-get install -y \
+    libldap2-dev \
+  ; \
+  apt-get clean; \
+	rm -rf /var/lib/apt/lists/*; \
+  docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu; \
+  docker-php-ext-install \
+    ldap \
+    pdo_mysql \
+  ; \

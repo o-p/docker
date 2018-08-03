@@ -1,0 +1,16 @@
+# example, people, fake.com
+dn: cn=example,ou=people,dc=ldap,dc=docker
+mobile: 0987-654321
+cn: Example
+displayName: Example
+givenName: FakeMan
+l: Fake Office
+mail: example@fake.com
+o: Fake Technologies Limited, Taiwan Branch.
+objectClass: inetOrgPerson
+ou: people
+roomNumber: 999
+sn: example
+uid: example
+employeeNumber: Z001
+userPassword: 123
